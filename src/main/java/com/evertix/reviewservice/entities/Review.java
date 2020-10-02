@@ -29,10 +29,10 @@ public class Review extends AuditModel {
     private Short stars;
 
     @Transient
-    private User student;
+    private User studentModel;
 
     @Transient
-    private User teacher;
+    private User teacherModel;
 
     @Column(name = "student_id")
     private Long studentId;

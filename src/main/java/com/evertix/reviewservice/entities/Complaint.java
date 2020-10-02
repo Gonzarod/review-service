@@ -42,10 +42,10 @@ public class Complaint extends AuditModel {
     private Long reportedId;
 
     @Transient
-    private User madeBy;
+    private User madeByModel;
 
     @Transient
-    private User reported;
+    private User reportedModel;
 
 
     public Complaint(String subject, String description, Long madeById, Long reportedId) {
