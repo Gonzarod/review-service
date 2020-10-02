@@ -4,6 +4,8 @@ package com.evertix.reviewservice.entities;
 import com.evertix.reviewservice.model.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -15,8 +17,8 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "complaints")
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 public class Complaint extends AuditModel {
 
     @Id
@@ -53,5 +55,9 @@ public class Complaint extends AuditModel {
         this.subject=subject;
         this.madeById=madeById;
         this.reportedId=reportedId;
+    }
+
+    public Complaint() {
+
     }
 }

@@ -47,4 +47,8 @@ public class Review extends AuditModel {
         this.studentId=studentId;
         this.teacherId=teacherId;
     }
+
+    public Review() {
+
+    }
 }
