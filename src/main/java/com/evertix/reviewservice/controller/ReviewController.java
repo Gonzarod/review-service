@@ -1,13 +1,9 @@
 package com.evertix.reviewservice.controller;
 
-import com.evertix.tutofastbackend.model.Review;
-import com.evertix.tutofastbackend.model.Subscription;
-import com.evertix.tutofastbackend.resource.PlanSaveResource;
-import com.evertix.tutofastbackend.resource.ReviewResource;
-import com.evertix.tutofastbackend.resource.ReviewSaveResource;
-import com.evertix.tutofastbackend.resource.SubscriptionResource;
-import com.evertix.tutofastbackend.service.ReviewService;
-import com.evertix.tutofastbackend.service.SubscriptionService;
+import com.evertix.reviewservice.entities.Review;
+import com.evertix.reviewservice.resource.ReviewResource;
+import com.evertix.reviewservice.resource.ReviewSaveResource;
+import com.evertix.reviewservice.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -31,7 +27,6 @@ import java.util.stream.Collectors;
 @Tag(name = "Review", description = "API")
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:4200")
 public class ReviewController {
     @Autowired
     private ModelMapper mapper;
@@ -57,11 +52,11 @@ public class ReviewController {
                             , content = @Content(array = @ArraySchema(schema = @Schema(type = "string"))))
             })
     public Page<ReviewResource> getAllReviews(@PageableDefault @Parameter(hidden = true) Pageable pageable){
-        Page<Review> reviewPage = reviewService.getAllReview(pageable);
+        Page<Review> reviewPage = reviewService.getAllReviews(pageable);
         List<ReviewResource> resources = reviewPage.getContent().stream().map(this::convertToResource).collect(Collectors.toList());
         return new PageImpl<>(resources,pageable,reviewPage.getTotalElements());
     }
-
+/*
     @GetMapping("reviews/teacher/{teacherId}")
     @Operation(summary = "Get Reviews By User Id", description = "Get Reviews By Teacher Id", tags = {"Review"})
     public Page<ReviewResource> getAllTeachersReviews(@PathVariable(name = "teacherId") Long teacherId, @PageableDefault @Parameter(hidden = true) Pageable pageable){
@@ -88,7 +83,7 @@ public class ReviewController {
         return reviewService.deleteReview(reviewId);
     }
 
-
+ */
     private Review convertToEntity(ReviewSaveResource resource) {return mapper.map(resource,Review.class);}
     private ReviewResource convertToResource(Review entity){return mapper.map(entity, ReviewResource.class);}
 }

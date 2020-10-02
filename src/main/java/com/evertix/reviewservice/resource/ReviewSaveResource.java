@@ -1,15 +1,13 @@
 package com.evertix.reviewservice.resource;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-@Getter
-@Setter
+@Data
 public class ReviewSaveResource {
 
     @NotNull(message = "Description cannot be null")

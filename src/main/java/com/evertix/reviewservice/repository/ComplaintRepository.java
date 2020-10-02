@@ -1,6 +1,7 @@
 package com.evertix.reviewservice.repository;
 
-import com.evertix.tutofastbackend.model.Complaint;
+
+import com.evertix.reviewservice.entities.Complaint;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

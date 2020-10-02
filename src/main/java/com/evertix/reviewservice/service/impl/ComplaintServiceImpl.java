@@ -1,9 +1,9 @@
 package com.evertix.reviewservice.service.impl;
 
-import com.evertix.tutofastbackend.exception.ResourceNotFoundException;
-import com.evertix.tutofastbackend.model.Complaint;
-import com.evertix.tutofastbackend.repository.ComplaintRepository;
-import com.evertix.tutofastbackend.repository.UserRepository;
+
+import com.evertix.reviewservice.entities.Complaint;
+import com.evertix.reviewservice.repository.ComplaintRepository;
+import com.evertix.reviewservice.service.ComplaintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,12 +16,9 @@ public class ComplaintServiceImpl implements ComplaintService {
     @Autowired
     private ComplaintRepository complaintRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @Override
     public Page<Complaint> getAllComplaints(Pageable pageable) { return complaintRepository.findAll(pageable); }
-
+/*
     @Override
     public Page<Complaint> getAllComplaintsByMadeById(Long userId, Pageable pageable) {
         return complaintRepository.findAllByMadeById(userId, pageable);
@@ -59,6 +56,8 @@ public class ComplaintServiceImpl implements ComplaintService {
             return ResponseEntity.ok().build();
         }).orElseThrow(()->new ResourceNotFoundException("Complaint with Id: "+complaintId+" not found"));
     }
+
+ */
 
 
 

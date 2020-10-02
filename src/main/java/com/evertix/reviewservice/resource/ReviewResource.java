@@ -1,15 +1,13 @@
 package com.evertix.reviewservice.resource;
 
-import com.evertix.tutofastbackend.model.User;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+
+@Data
 public class ReviewResource {
     private Long id;
     private String description;
     private Short stars;
-    private User student;
-    private User teacher;
+    private Long studentId;
+    private Long teacherId;
 }

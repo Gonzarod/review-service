@@ -1,10 +1,10 @@
 package com.evertix.reviewservice.controller;
 
 
-import com.evertix.tutofastbackend.model.Complaint;
-import com.evertix.tutofastbackend.resource.*;
-import com.evertix.tutofastbackend.resource.ComplaintResource;
-import com.evertix.tutofastbackend.service.ComplaintService;
+import com.evertix.reviewservice.entities.Complaint;
+import com.evertix.reviewservice.resource.ComplaintResource;
+import com.evertix.reviewservice.resource.ComplaintSaveResource;
+import com.evertix.reviewservice.service.ComplaintService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 @Tag(name = "Complaint", description = "API")
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:4200")
 public class ComplaintController {
 
     @Autowired
@@ -60,6 +59,7 @@ public class ComplaintController {
         List<ComplaintResource> resources = complaintPage.getContent().stream().map(this::convertToResource).collect(Collectors.toList());
         return new PageImpl<>(resources,pageable,complaintPage.getTotalElements());
     }
+    /*
 
     @GetMapping("/madeByUsers/{madeById}/complaints")
     @Operation(summary = "Get All Complaints By MadeBy", description = "Get All Complaints By MadeBy", tags = {"Complaint"},
@@ -127,6 +127,8 @@ public class ComplaintController {
     public ResponseEntity<?> deleteComplaint(@PathVariable(name = "complaintId") Long complaintId){
         return complaintService.deleteComplaint(complaintId);
     }
+
+     */
 
     private Complaint convertToEntity(ComplaintSaveResource resource){return mapper.map(resource, Complaint.class);}
     private ComplaintResource convertToResource(Complaint entity){return mapper.map(entity, ComplaintResource.class);}

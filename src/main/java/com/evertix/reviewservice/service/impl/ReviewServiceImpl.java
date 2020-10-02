@@ -1,9 +1,8 @@
 package com.evertix.reviewservice.service.impl;
 
-import com.evertix.tutofastbackend.exception.ResourceNotFoundException;
-import com.evertix.tutofastbackend.model.Review;
-import com.evertix.tutofastbackend.repository.ReviewRepository;
-import com.evertix.tutofastbackend.repository.UserRepository;
+import com.evertix.reviewservice.entities.Review;
+import com.evertix.reviewservice.repository.ReviewRepository;
+import com.evertix.reviewservice.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,16 +15,15 @@ public class ReviewServiceImpl implements ReviewService {
     @Autowired
     ReviewRepository reviewRepository;
 
-    @Autowired
-    UserRepository userRepository;
 
 
 
     @Override
-    public Page<Review> getAllReview(Pageable pageable) {
+    public Page<Review> getAllReviews(Pageable pageable) {
         return reviewRepository.findAll(pageable);
     }
 
+    /*
     @Override
     public Page<Review> getReviewsByTeacher(Long teacherId, Pageable pageable) {
         return reviewRepository.getAllByTeacherId(teacherId,pageable);
@@ -58,5 +56,7 @@ public class ReviewServiceImpl implements ReviewService {
             return ResponseEntity.ok().build();
         }).orElseThrow(()-> new ResourceNotFoundException("Review with id: "+reviewId+"not found"));
     }
+
+     */
 
 }

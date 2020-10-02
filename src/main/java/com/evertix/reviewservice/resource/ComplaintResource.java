@@ -1,12 +1,8 @@
 package com.evertix.reviewservice.resource;
 
-import com.evertix.tutofastbackend.model.User;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-
-@Getter
-@Setter
+@Data
 public class ComplaintResource {
 
     private Long id;
@@ -15,7 +11,7 @@ public class ComplaintResource {
 
     private String description;
 
-    private User madeBy;
+    private Long madeById;
 
-    private User reported;
+    private Long reportedId;
 }

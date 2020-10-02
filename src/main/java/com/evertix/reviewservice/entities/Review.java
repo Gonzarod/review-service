@@ -1,5 +1,6 @@
 package com.evertix.reviewservice.entities;
 
+import com.evertix.reviewservice.model.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -27,17 +28,23 @@ public class Review extends AuditModel {
     @Max(value = 5)
     private Short stars;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "student_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    //@JsonIgnore
+    @Transient
     private User student;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "teacher_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    //@JsonIgnore
+    @Transient
     private User teacher;
 
+    @Column(name = "student_id")
+    private Long studentId;
 
+    @Column(name = "teacher_id")
+    private Long teacherId;
+
+
+    public Review(Short stars, String description, Long studentId, Long teacherId) {
+        this.description=description;
+        this.stars=stars;
+        this.studentId=studentId;
+        this.teacherId=teacherId;
+    }
 }
