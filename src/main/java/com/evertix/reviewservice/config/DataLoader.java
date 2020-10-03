@@ -27,11 +27,16 @@ public class DataLoader {
     }
 
     private void LoadData() {
-        this.reviewRepository.saveAll(List.of(new Review((short) 5,"Excelente profesor", (long) 1,(long) 2),
-                                              new Review((short) 4,"Enseña bien",(long) 1,(long) 2),
-                                              new Review((short) 4,"Buena clase",(long) 1,(long)2)));
+        
+        List<Review> reviews = new ArrayList<Review>();
+        reviews.add(new Review((short) 5,"Excelente profesor", (long) 1,(long) 2));
+        reviews.add(new Review((short) 4,"Buena clase",(long) 1,(long)2));
+        reviews.add(new Review((short) 4,"Enseña bien",(long) 1,(long) 2));
+        this.reviewRepository.saveAll(reviews);
 
-        this.complaintRepository.saveAll(List.of(new Complaint("Tardanza","Llego 5 minutos tarde",(long) 1, (long) 2),
-                                                 new Complaint("Acosador","Me acosó",(long) 2, (long) 1)));
+        List<Complaint> complaints = new ArrayList<Complaint>();
+        complaints.add(new Complaint("Tardanza","Llego 5 minutos tarde",(long) 1, (long) 2));
+        complaints.add(new Complaint("Acosador","Me acosó",(long) 2, (long) 1));
+        this.complaintRepository.saveAll(complaints);
     }
 }
