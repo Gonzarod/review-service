@@ -17,7 +17,10 @@ public class ComplaintServiceImpl implements ComplaintService {
     private ComplaintRepository complaintRepository;
 
     @Override
-    public Page<Complaint> getAllComplaints(Pageable pageable) { return complaintRepository.findAll(pageable); }
+    public Page<Complaint> getAllComplaints(Pageable pageable) {
+
+        return complaintRepository.findAll(pageable);
+    }
 /*
     @Override
     public Page<Complaint> getAllComplaintsByMadeById(Long userId, Pageable pageable) {

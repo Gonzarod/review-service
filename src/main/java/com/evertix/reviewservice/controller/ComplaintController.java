@@ -2,8 +2,6 @@ package com.evertix.reviewservice.controller;
 
 
 import com.evertix.reviewservice.entities.Complaint;
-import com.evertix.reviewservice.resource.ComplaintResource;
-import com.evertix.reviewservice.resource.ComplaintSaveResource;
 import com.evertix.reviewservice.service.ComplaintService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,26 +10,16 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Tag(name = "Complaint", description = "API")
 @RestController
 @RequestMapping("/api")
 public class ComplaintController {
-
-    @Autowired
-    private ModelMapper mapper;
 
     @Autowired
     private ComplaintService complaintService;
@@ -54,10 +42,9 @@ public class ComplaintController {
                             , name = "sort"
                             , content = @Content(array = @ArraySchema(schema = @Schema(type = "string"))))
             })
-    public Page<ComplaintResource> getAllComplaints(@PageableDefault @Parameter(hidden = true) Pageable pageable){
-        Page<Complaint> complaintPage = complaintService.getAllComplaints(pageable);
-        List<ComplaintResource> resources = complaintPage.getContent().stream().map(this::convertToResource).collect(Collectors.toList());
-        return new PageImpl<>(resources,pageable,complaintPage.getTotalElements());
+    public Page<Complaint> getAllComplaints(@PageableDefault @Parameter(hidden = true) Pageable pageable){
+        return complaintService.getAllComplaints(pageable);
+
     }
     /*
 
@@ -130,6 +117,4 @@ public class ComplaintController {
 
      */
 
-    private Complaint convertToEntity(ComplaintSaveResource resource){return mapper.map(resource, Complaint.class);}
-    private ComplaintResource convertToResource(Complaint entity){return mapper.map(entity, ComplaintResource.class);}
 }

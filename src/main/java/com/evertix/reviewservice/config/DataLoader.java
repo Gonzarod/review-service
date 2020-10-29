@@ -2,10 +2,16 @@ package com.evertix.reviewservice.config;
 ;
 import com.evertix.reviewservice.entities.Complaint;
 import com.evertix.reviewservice.entities.Review;
+import com.evertix.reviewservice.model.User;
 import com.evertix.reviewservice.repository.ComplaintRepository;
 import com.evertix.reviewservice.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,25 +24,32 @@ public class DataLoader {
 
     private ReviewRepository reviewRepository;
     private ComplaintRepository complaintRepository;
-
+    private RestTemplate restTemplate;
     @Autowired
-    public DataLoader(ComplaintRepository complaintRepository,ReviewRepository reviewRepository) {
+    public DataLoader(ComplaintRepository complaintRepository, ReviewRepository reviewRepository, RestTemplate restTemplate) {
         this.reviewRepository=reviewRepository;
         this.complaintRepository=complaintRepository;
+        this.restTemplate=restTemplate;
         LoadData();
     }
 
     private void LoadData() {
-        
+        //
+        //Fetch User Data (calls to user-service)}
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<?> request = new HttpEntity<>(headers);
+        User userStudent = restTemplate.getForObject("http://localhost:8080/api/users/username/jesus.student",User.class);
+        User userTeacher = restTemplate.getForObject("http://localhost:8080/api/users/username/albert.teacher",User.class);
+
         List<Review> reviews = new ArrayList<Review>();
-        reviews.add(new Review((short) 5,"Excelente profesor", (long) 1,(long) 2));
-        reviews.add(new Review((short) 4,"Buena clase",(long) 1,(long)2));
-        reviews.add(new Review((short) 4,"Enseña bien",(long) 1,(long) 2));
+        reviews.add(new Review((short) 5,"Excelente profesor",userStudent.getId(), userTeacher.getId()));
+        reviews.add(new Review((short) 4,"Buena clase",userStudent.getId(), userTeacher.getId()));
+        reviews.add(new Review((short) 4,"Enseña bien",userStudent.getId(), userTeacher.getId()));
         this.reviewRepository.saveAll(reviews);
 
         List<Complaint> complaints = new ArrayList<Complaint>();
-        complaints.add(new Complaint("Tardanza","Llego 5 minutos tarde",(long) 1, (long) 2));
-        complaints.add(new Complaint("Acosador","Me acosó",(long) 2, (long) 1));
+        complaints.add(new Complaint("Tardanza","Llego 5 minutos tarde",userStudent.getId(), userTeacher.getId()));
+        complaints.add(new Complaint("Acosador","Me acosó",userTeacher.getId(), userStudent.getId()));
         this.complaintRepository.saveAll(complaints);
     }
 }

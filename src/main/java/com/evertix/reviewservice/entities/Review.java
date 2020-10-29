@@ -1,6 +1,8 @@
 package com.evertix.reviewservice.entities;
 
 import com.evertix.reviewservice.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -13,6 +15,7 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name="reviews")
 @Getter
+@JsonIgnoreProperties(value = {"studentId","teacherId"},allowSetters = true)
 @Setter
 public class Review extends AuditModel {
     @Id

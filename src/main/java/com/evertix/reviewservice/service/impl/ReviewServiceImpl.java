@@ -1,13 +1,19 @@
 package com.evertix.reviewservice.service.impl;
 
 import com.evertix.reviewservice.entities.Review;
+import com.evertix.reviewservice.model.User;
 import com.evertix.reviewservice.repository.ReviewRepository;
 import com.evertix.reviewservice.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -15,12 +21,42 @@ public class ReviewServiceImpl implements ReviewService {
     @Autowired
     ReviewRepository reviewRepository;
 
-
-
+    @Autowired
+    RestTemplate restTemplate;
 
     @Override
-    public Page<Review> getAllReviews(Pageable pageable) {
-        return reviewRepository.findAll(pageable);
+    public Page<Review> getAllReviewsPage(Pageable pageable) {
+
+        Page<Review> page=reviewRepository.findAll(pageable);
+        List<Review> result=page.getContent().stream().map(review -> {
+            User student=restTemplate.getForObject("http://localhost:8080/api/users/"+review.getStudentId(),User.class);
+            User teacher=restTemplate.getForObject("http://localhost:8080/api/users/"+ review.getTeacherId(),User.class);
+            review.setStudentModel(student);
+            review.setTeacherModel(teacher);
+            return review;
+        }).collect(Collectors.toList());
+        return new PageImpl<>(result,pageable, page.getTotalElements());
+
+    }
+
+    @Override
+    public List<Review> getAllReviews() {
+        return reviewRepository.findAll().stream().map(review -> {
+            User student=restTemplate.getForObject("http://localhost:8080/api/users/"+review.getStudentId(),User.class);
+            User teacher=restTemplate.getForObject("http://localhost:8080/api/users/"+ review.getTeacherId(),User.class);
+            review.setStudentModel(student);
+            review.setTeacherModel(teacher);
+            return review;
+        }).collect(Collectors.toList());
+
+        /*
+        return userRating.getRatings().stream()
+                .map(rating -> {
+                    Movie movie = restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(), Movie.class);
+                    return new CatalogItem(movie.getName(), movie.getDescription(), rating.getRating());
+                })
+                .collect(Collectors.toList());
+         */
     }
 
     /*

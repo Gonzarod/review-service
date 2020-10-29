@@ -2,7 +2,17 @@ package com.evertix.reviewservice.model;
 
 
 import lombok.Data;
+
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 @Data
@@ -10,31 +20,21 @@ public class User {
 
     public User() { }
 
-    public User(String username, String password, String email, String name,
+    public User(Long id,String username, String email, String name,
                 String lastName, String dni, String phone, LocalDate birthday, String address) {
+        this.id=id;
         this.username = username;
-        this.password = password;
         this.email = email;
         this.name = name;
         this.lastName = lastName;
-        this.dni = dni;
-        this.phone = phone;
-        this.birthday = birthday;
-        this.address = address;
+
+
     }
 
     private Long id;
     private String username;
-    private String password;
     private String email;
     private String name;
     private String lastName;
-    private String dni;
-    private String phone;
-    private LocalDate birthday;
-    private String address;
-    private int totalStar;
-    private Boolean active;
-    private String linkedin;
 
 }

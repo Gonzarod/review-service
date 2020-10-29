@@ -1,8 +1,6 @@
 package com.evertix.reviewservice.controller;
 
 import com.evertix.reviewservice.entities.Review;
-import com.evertix.reviewservice.resource.ReviewResource;
-import com.evertix.reviewservice.resource.ReviewSaveResource;
 import com.evertix.reviewservice.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,13 +9,10 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,16 +21,22 @@ import java.util.stream.Collectors;
 
 @Tag(name = "Review", description = "API")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/reviews")
 public class ReviewController {
-    @Autowired
-    private ModelMapper mapper;
+
 
     @Autowired
     ReviewService reviewService;
 
-    @GetMapping("/reviews")
-    @Operation(summary = "Get All Reviews", description = "Get All Review", tags = {"Review"},
+
+    @GetMapping("/")
+    @Operation(summary = "Get All Reviews", description = "Get All Review", tags = {"Review"})
+    public List<Review> getAllReviewsPage(){
+        return reviewService.getAllReviews();
+    }
+
+    @GetMapping("/page")
+    @Operation(summary = "Get All Reviews Page", description = "Get All Review Page", tags = {"Review"},
             parameters = {
                     @Parameter(in = ParameterIn.QUERY
                             , description = "Page you want to retrieve (0..N)"
@@ -51,11 +52,10 @@ public class ReviewController {
                             , name = "sort"
                             , content = @Content(array = @ArraySchema(schema = @Schema(type = "string"))))
             })
-    public Page<ReviewResource> getAllReviews(@PageableDefault @Parameter(hidden = true) Pageable pageable){
-        Page<Review> reviewPage = reviewService.getAllReviews(pageable);
-        List<ReviewResource> resources = reviewPage.getContent().stream().map(this::convertToResource).collect(Collectors.toList());
-        return new PageImpl<>(resources,pageable,reviewPage.getTotalElements());
+    public Page<Review> getAllReviewsPage(@PageableDefault @Parameter(hidden = true) Pageable pageable){
+        return reviewService.getAllReviewsPage(pageable);
     }
+
 /*
     @GetMapping("reviews/teacher/{teacherId}")
     @Operation(summary = "Get Reviews By User Id", description = "Get Reviews By Teacher Id", tags = {"Review"})
@@ -84,6 +84,5 @@ public class ReviewController {
     }
 
  */
-    private Review convertToEntity(ReviewSaveResource resource) {return mapper.map(resource,Review.class);}
-    private ReviewResource convertToResource(Review entity){return mapper.map(entity, ReviewResource.class);}
+
 }
