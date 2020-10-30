@@ -39,6 +39,9 @@ public class DataLoader {
         //Fetch User Data (calls to user-service)}
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<?> request = new HttpEntity<>(headers);
+        //User userStudent = restTemplate.getForObject("http://user-service/api/users/username/jesus.student",User.class);
+        //User userTeacher = restTemplate.getForObject("http://user-service/api/users/username/albert.teacher",User.class);
+
         User userStudent = restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/username/jesus.student",User.class);
         User userTeacher = restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/username/albert.teacher",User.class);
 

@@ -37,10 +37,36 @@ public class ReviewServiceImpl implements ReviewService {
         }).collect(Collectors.toList());
         return new PageImpl<>(result,pageable, page.getTotalElements());
 
+        /*
+        Page<Review> page=reviewRepository.findAll(pageable);
+        List<Review> result=page.getContent().stream().map(review -> {
+            User student=restTemplate.getForObject("http://localhost:8080/api/users/"+review.getStudentId(),User.class);
+            User teacher=restTemplate.getForObject("http://localhost:8080/api/users/"+ review.getTeacherId(),User.class);
+            review.setStudentModel(student);
+            review.setTeacherModel(teacher);
+            return review;
+        }).collect(Collectors.toList());
+        return new PageImpl<>(result,pageable, page.getTotalElements());
+
+         */
+        /*
+        Page<Review> page=reviewRepository.findAll(pageable);
+        List<Review> result=page.getContent().stream().map(review -> {
+            User student=restTemplate.getForObject("http://user-service/api/users/"+review.getStudentId(),User.class);
+            User teacher=restTemplate.getForObject("http://user-service/api/users/"+ review.getTeacherId(),User.class);
+            review.setStudentModel(student);
+            review.setTeacherModel(teacher);
+            return review;
+        }).collect(Collectors.toList());
+        return new PageImpl<>(result,pageable, page.getTotalElements());
+
+         */
+
     }
 
     @Override
     public List<Review> getAllReviews() {
+
         return reviewRepository.findAll().stream().map(review -> {
             User student=restTemplate.getForObject("http://localhost:8080/api/users/"+review.getStudentId(),User.class);
             User teacher=restTemplate.getForObject("http://localhost:8080/api/users/"+ review.getTeacherId(),User.class);
@@ -48,15 +74,18 @@ public class ReviewServiceImpl implements ReviewService {
             review.setTeacherModel(teacher);
             return review;
         }).collect(Collectors.toList());
-
         /*
-        return userRating.getRatings().stream()
-                .map(rating -> {
-                    Movie movie = restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(), Movie.class);
-                    return new CatalogItem(movie.getName(), movie.getDescription(), rating.getRating());
-                })
-                .collect(Collectors.toList());
+        return reviewRepository.findAll().stream().map(review -> {
+            User student=restTemplate.getForObject("http://user-service/api/users/"+review.getStudentId(),User.class);
+            User teacher=restTemplate.getForObject("http://user-service/api/users/"+ review.getTeacherId(),User.class);
+            review.setStudentModel(student);
+            review.setTeacherModel(teacher);
+            return review;
+        }).collect(Collectors.toList());
+        4
          */
+
+
     }
 
     /*
