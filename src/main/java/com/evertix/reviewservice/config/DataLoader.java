@@ -6,6 +6,7 @@ import com.evertix.reviewservice.model.User;
 import com.evertix.reviewservice.repository.ComplaintRepository;
 import com.evertix.reviewservice.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@Profile("prod")
 @Component
 public class DataLoader {
 
