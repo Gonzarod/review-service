@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@Profile("prod")
 @Component
 public class DataLoader {
 
@@ -40,8 +39,8 @@ public class DataLoader {
         //Fetch User Data (calls to user-service)}
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<?> request = new HttpEntity<>(headers);
-        User userStudent = restTemplate.getForObject("http://localhost:8080/api/users/username/jesus.student",User.class);
-        User userTeacher = restTemplate.getForObject("http://localhost:8080/api/users/username/albert.teacher",User.class);
+        User userStudent = restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/username/jesus.student",User.class);
+        User userTeacher = restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/username/albert.student",User.class);
 
         List<Review> reviews = new ArrayList<Review>();
         reviews.add(new Review((short) 5,"Excelente profesor",userStudent.getId(), userTeacher.getId()));
