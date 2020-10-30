@@ -29,8 +29,8 @@ public class ReviewServiceImpl implements ReviewService {
 
         Page<Review> page=reviewRepository.findAll(pageable);
         List<Review> result=page.getContent().stream().map(review -> {
-            User student=restTemplate.getForObject("http://user-service/api/users/"+review.getStudentId()+"/",User.class);
-            User teacher=restTemplate.getForObject("http://user-service/api/users/"+ review.getTeacherId()+"/",User.class);
+            User student=restTemplate.getForObject("https://user-service/api/users/"+review.getStudentId()+"/",User.class);
+            User teacher=restTemplate.getForObject("https://user-service/api/users/"+ review.getTeacherId()+"/",User.class);
             review.setStudentModel(student);
             review.setTeacherModel(teacher);
             return review;
@@ -40,7 +40,7 @@ public class ReviewServiceImpl implements ReviewService {
         /*
         Page<Review> page=reviewRepository.findAll(pageable);
         List<Review> result=page.getContent().stream().map(review -> {
-            User student=restTemplate.getForObject("http://localhost:8080/api/users/"+review.getStudentId(),User.class);
+            User student=restTemplate.getForObject("https://localhost:8080/api/users/"+review.getStudentId(),User.class);
             User teacher=restTemplate.getForObject("http://localhost:8080/api/users/"+ review.getTeacherId(),User.class);
             review.setStudentModel(student);
             review.setTeacherModel(teacher);
@@ -68,8 +68,8 @@ public class ReviewServiceImpl implements ReviewService {
     public List<Review> getAllReviews() {
 
         return reviewRepository.findAll().stream().map(review -> {
-            User student=restTemplate.getForObject("http://user-service/api/users/"+review.getStudentId(),User.class);
-            User teacher=restTemplate.getForObject("http://user-service/api/users/"+ review.getTeacherId(),User.class);
+            User student=restTemplate.getForObject("https://user-service/api/users/"+review.getStudentId(),User.class);
+            User teacher=restTemplate.getForObject("https://user-service/api/users/"+ review.getTeacherId(),User.class);
             review.setStudentModel(student);
             review.setTeacherModel(teacher);
             return review;
