@@ -25,6 +25,22 @@ public class ReviewServiceImpl implements ReviewService {
     RestTemplate restTemplate;
 
     @Override
+    public List<Review> getAllReviews() {
+
+        return reviewRepository.findAll().stream().map(review -> {
+            //User student=restTemplate.getForObject("https://user-service/api/users/"+review.getStudentId(),User.class);
+            //User teacher=restTemplate.getForObject("https://user-service/api/users/"+ review.getTeacherId(),User.class);
+            User student=restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/"+review.getStudentId(),User.class);
+            User teacher=restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/"+ review.getTeacherId(),User.class);
+            review.setStudentModel(student);
+            review.setTeacherModel(teacher);
+            return review;
+        }).collect(Collectors.toList());
+
+    }
+
+
+    @Override
     public Page<Review> getAllReviewsPage(Pageable pageable) {
 
         Page<Review> page=reviewRepository.findAll(pageable);
@@ -41,20 +57,6 @@ public class ReviewServiceImpl implements ReviewService {
 
     }
 
-    @Override
-    public List<Review> getAllReviews() {
-
-        return reviewRepository.findAll().stream().map(review -> {
-            //User student=restTemplate.getForObject("https://user-service/api/users/"+review.getStudentId(),User.class);
-            //User teacher=restTemplate.getForObject("https://user-service/api/users/"+ review.getTeacherId(),User.class);
-            User student=restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/"+review.getStudentId(),User.class);
-            User teacher=restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/"+ review.getTeacherId(),User.class);
-            review.setStudentModel(student);
-            review.setTeacherModel(teacher);
-            return review;
-        }).collect(Collectors.toList());
-
-    }
 
     /*
     @Override

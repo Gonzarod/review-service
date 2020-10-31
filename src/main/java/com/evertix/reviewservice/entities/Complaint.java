@@ -2,6 +2,7 @@ package com.evertix.reviewservice.entities;
 
 
 import com.evertix.reviewservice.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,6 +19,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "complaints")
 @Getter
+@JsonIgnoreProperties(value = {"madeById","reportedId"},allowSetters = true)
 @Setter
 public class Complaint extends AuditModel {
 

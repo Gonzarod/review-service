@@ -2,24 +2,51 @@ package com.evertix.reviewservice.service.impl;
 
 
 import com.evertix.reviewservice.entities.Complaint;
+import com.evertix.reviewservice.entities.Review;
+import com.evertix.reviewservice.model.User;
 import com.evertix.reviewservice.repository.ComplaintRepository;
 import com.evertix.reviewservice.service.ComplaintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ComplaintServiceImpl implements ComplaintService {
 
     @Autowired
+    private RestTemplate restTemplate;
+    @Autowired
     private ComplaintRepository complaintRepository;
 
     @Override
-    public Page<Complaint> getAllComplaints(Pageable pageable) {
+    public List<Complaint> getAllReviews() {
+        return complaintRepository.findAll().stream().map(complaint -> {
+            User madeBy=restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/"+complaint.getMadeById(),User.class);
+            User reported=restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/"+ complaint.getReportedId(),User.class);
+            complaint.setMadeByModel(madeBy);
+            complaint.setReportedModel(reported);
+            return complaint;
+        }).collect(Collectors.toList());
+    }
 
-        return complaintRepository.findAll(pageable);
+    @Override
+    public Page<Complaint> getAllComplaints(Pageable pageable) {
+        Page<Complaint> page=complaintRepository.findAll(pageable);
+        List<Complaint> result=page.getContent().stream().map(complaint -> {
+            User madeBy=restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/"+complaint.getMadeById(),User.class);
+            User reported=restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/"+ complaint.getReportedId(),User.class);
+            complaint.setMadeByModel(madeBy);
+            complaint.setReportedModel(reported);
+            return complaint;
+        }).collect(Collectors.toList());
+        return new PageImpl<>(result,pageable, page.getTotalElements());
     }
 /*
     @Override
