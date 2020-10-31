@@ -16,17 +16,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "Complaint", description = "API")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/complaints")
 public class ComplaintController {
 
     @Autowired
     private ComplaintService complaintService;
 
 
-    @GetMapping("/complaints")
-    @Operation(summary = "Get All Complaints", description = "Get Complaints", tags = {"Complaint"},
+    @GetMapping("/page")
+    @Operation(summary = "Get All Complaints Page", description = "Get Complaints Page", tags = {"Complaint"},
             parameters = {
                     @Parameter(in = ParameterIn.QUERY
                             , description = "Page you want to retrieve (0..N)"
@@ -42,8 +44,15 @@ public class ComplaintController {
                             , name = "sort"
                             , content = @Content(array = @ArraySchema(schema = @Schema(type = "string"))))
             })
-    public Page<Complaint> getAllComplaints(@PageableDefault @Parameter(hidden = true) Pageable pageable){
-        return complaintService.getAllComplaints(pageable);
+    public Page<Complaint> getAllComplaintsPage(@PageableDefault @Parameter(hidden = true) Pageable pageable){
+        return complaintService.getAllComplaintsPage(pageable);
+
+    }
+
+    @GetMapping("/")
+    @Operation(summary = "Get All Complaints", description = "Get Complaints", tags = {"Complaint"})
+    public List<Complaint> getAllComplaintsPage(){
+        return complaintService.getAllComplaints();
 
     }
     /*

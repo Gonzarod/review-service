@@ -2,7 +2,6 @@ package com.evertix.reviewservice.service.impl;
 
 
 import com.evertix.reviewservice.entities.Complaint;
-import com.evertix.reviewservice.entities.Review;
 import com.evertix.reviewservice.model.User;
 import com.evertix.reviewservice.repository.ComplaintRepository;
 import com.evertix.reviewservice.service.ComplaintService;
@@ -21,12 +20,13 @@ import java.util.stream.Collectors;
 public class ComplaintServiceImpl implements ComplaintService {
 
     @Autowired
-    private RestTemplate restTemplate;
+    RestTemplate restTemplate;
+
     @Autowired
     private ComplaintRepository complaintRepository;
 
     @Override
-    public List<Complaint> getAllReviews() {
+    public List<Complaint> getAllComplaints() {
         return complaintRepository.findAll().stream().map(complaint -> {
             User madeBy=restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/"+complaint.getMadeById(),User.class);
             User reported=restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/"+ complaint.getReportedId(),User.class);
@@ -37,7 +37,7 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
-    public Page<Complaint> getAllComplaints(Pageable pageable) {
+    public Page<Complaint> getAllComplaintsPage(Pageable pageable) {
         Page<Complaint> page=complaintRepository.findAll(pageable);
         List<Complaint> result=page.getContent().stream().map(complaint -> {
             User madeBy=restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/"+complaint.getMadeById(),User.class);
