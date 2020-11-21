@@ -30,8 +30,8 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewRepository.findAll().stream().map(review -> {
             //User student=restTemplate.getForObject("https://user-service/api/users/"+review.getStudentId(),User.class);
             //User teacher=restTemplate.getForObject("https://user-service/api/users/"+ review.getTeacherId(),User.class);
-            User student=restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/"+review.getStudentId(),User.class);
-            User teacher=restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/"+ review.getTeacherId(),User.class);
+            User student=restTemplate.getForObject("http://tutofast-user-service.eastus.azurecontainer.io:8085/api/users/"+review.getStudentId(),User.class);
+            User teacher=restTemplate.getForObject("http://tutofast-user-service.eastus.azurecontainer.io:8085/api/users/"+ review.getTeacherId(),User.class);
             review.setStudentModel(student);
             review.setTeacherModel(teacher);
             return review;
@@ -47,8 +47,8 @@ public class ReviewServiceImpl implements ReviewService {
         List<Review> result=page.getContent().stream().map(review -> {
             //User student=restTemplate.getForObject("https://user-service/api/users/"+review.getStudentId()+"/",User.class);
             //User teacher=restTemplate.getForObject("https://user-service/api/users/"+ review.getTeacherId()+"/",User.class);
-            User student=restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/"+review.getStudentId()+"/",User.class);
-            User teacher=restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/"+ review.getTeacherId()+"/",User.class);
+            User student=restTemplate.getForObject("http://tutofast-user-service.eastus.azurecontainer.io:8085/api/users/"+review.getStudentId()+"/",User.class);
+            User teacher=restTemplate.getForObject("http://tutofast-user-service.eastus.azurecontainer.io:8085/api/users/"+ review.getTeacherId()+"/",User.class);
             review.setStudentModel(student);
             review.setTeacherModel(teacher);
             return review;

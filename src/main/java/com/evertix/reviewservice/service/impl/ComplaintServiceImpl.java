@@ -28,8 +28,8 @@ public class ComplaintServiceImpl implements ComplaintService {
     @Override
     public List<Complaint> getAllComplaints() {
         return complaintRepository.findAll().stream().map(complaint -> {
-            User madeBy=restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/"+complaint.getMadeById(),User.class);
-            User reported=restTemplate.getForObject("https://tutofast-user-service.herokuapp.com/api/users/"+ complaint.getReportedId(),User.class);
+            User madeBy=restTemplate.getForObject("http://tutofast-user-service.eastus.azurecontainer.io:8085/api/users/"+complaint.getMadeById(),User.class);
+            User reported=restTemplate.getForObject("http://tutofast-user-service.eastus.azurecontainer.io:8085/api/users/"+ complaint.getReportedId(),User.class);
             complaint.setMadeByModel(madeBy);
             complaint.setReportedModel(reported);
             return complaint;
